@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureBank ATM Simulator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="atm-container">
+        <div class="atm-frame">
+            <div class="atm-header">
+                <div class="bank-logo">
+                    <i class="fas fa-university"></i>
+                    <span>SecureBank</span>
+                </div>
+                <div class="atm-status">
+                    <span class="status-indicator"></span>
+                    <span>ONLINE</span>
+                </div>
+            </div>
+
+            <div class="atm-screen">
+                <!-- Login Screen -->
+                <div id="login-screen" class="screen active">
+                    <div class="screen-header">
+                        <h2><i class="fas fa-lock"></i> Welcome to SecureBank ATM</h2>
+                        <p>Please enter your account details to continue</p>
+                    </div>
+                    <div class="login-form">
+                        <div class="input-group">
+                            <label for="account-number">Account Number</label>
+                            <input type="text" id="account-number" placeholder="Enter 10-digit account number" maxlength="10">
+                        </div>
+                        <div class="input-group">
+                            <label for="pin">PIN</label>
+                            <input type="password" id="pin" placeholder="Enter 4-digit PIN" maxlength="4">
+                        </div>
+                        <button id="login-btn" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i> LOGIN
+                        </button>
+                    </div>
+                    <div class="demo-accounts">
+                        <h4>Demo Accounts:</h4>
+                        <div class="demo-list">
+                            <div class="demo-account">Account: 1234567890, PIN: 1234</div>
+                            <div class="demo-account">Account: 9876543210, PIN: 5678</div>
+                            <div class="demo-account">Account: 5555666677, PIN: 9999</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Menu Screen -->
+                <div id="main-menu-screen" class="screen">
+                    <div class="screen-header">
+                        <h2>Welcome, <span id="user-name"></span></h2>
+                        <p>Account: <span id="user-account"></span></p>
+                    </div>
+                    <div class="menu-options">
+                        <button class="menu-btn" data-action="balance">
+                            <i class="fas fa-wallet"></i>
+                            <span>Balance Inquiry</span>
+                        </button>
+                        <button class="menu-btn" data-action="withdraw">
+                            <i class="fas fa-hand-holding-usd"></i>
+                            <span>Cash Withdrawal</span>
+                        </button>
+                        <button class="menu-btn" data-action="deposit">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Cash Deposit</span>
+                        </button>
+                        <button class="menu-btn" data-action="history">
+                            <i class="fas fa-history"></i>
+                            <span>Transaction History</span>
+                        </button>
+                    </div>
+                    <button id="logout-btn" class="btn btn-secondary">
+                        <i class="fas fa-sign-out-alt"></i> LOGOUT
+                    </button>
+                </div>
+
+                <!-- Balance Screen -->
+                <div id="balance-screen" class="screen">
+                    <div class="screen-header">
+                        <h2><i class="fas fa-wallet"></i> Account Balance</h2>
+                    </div>
+                    <div class="balance-display">
+                        <div class="balance-amount">
+                            <span class="currency">$</span>
+                            <span id="balance-amount">0.00</span>
+                        </div>
+                        <div class="balance-info">
+                            <p>Account: <span id="balance-account"></span></p>
+                            <p>Last Updated: <span id="balance-time"></span></p>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary back-btn" data-screen="main-menu">
+                        <i class="fas fa-arrow-left"></i> BACK TO MENU
+                    </button>
+                </div>
+
+                <!-- Withdrawal Screen -->
+                <div id="withdraw-screen" class="screen">
+                    <div class="screen-header">
+                        <h2><i class="fas fa-hand-holding-usd"></i> Cash Withdrawal</h2>
+                        <p>Current Balance: $<span id="withdraw-balance">0.00</span></p>
+                    </div>
+                    <div class="amount-options">
+                        <button class="amount-btn" data-amount="20">$20</button>
+                        <button class="amount-btn" data-amount="40">$40</button>
+                        <button class="amount-btn" data-amount="60">$60</button>
+                        <button class="amount-btn" data-amount="100">$100</button>
+                        <button class="amount-btn" data-amount="200">$200</button>
+                        <button class="amount-btn" data-amount="500">$500</button>
+                    </div>
+                    <div class="custom-amount">
+                        <label for="custom-withdraw">Other Amount:</label>
+                        <input type="number" id="custom-withdraw" placeholder="Enter amount" min="1" step="0.01">
+                        <button id="withdraw-custom-btn" class="btn btn-primary">WITHDRAW</button>
+                    </div>
+                    <button class="btn btn-secondary back-btn" data-screen="main-menu">
+                        <i class="fas fa-arrow-left"></i> BACK TO MENU
+                    </button>
+                </div>
+
+                <!-- Deposit Screen -->
+                <div id="deposit-screen" class="screen">
+                    <div class="screen-header">
+                        <h2><i class="fas fa-plus-circle"></i> Cash Deposit</h2>
+                        <p>Current Balance: $<span id="deposit-balance">0.00</span></p>
+                    </div>
+                    <div class="amount-options">
+                        <button class="amount-btn deposit-amount" data-amount="50">$50</button>
+                        <button class="amount-btn deposit-amount" data-amount="100">$100</button>
+                        <button class="amount-btn deposit-amount" data-amount="200">$200</button>
+                        <button class="amount-btn deposit-amount" data-amount="500">$500</button>
+                        <button class="amount-btn deposit-amount" data-amount="1000">$1000</button>
+                        <button class="amount-btn deposit-amount" data-amount="2000">$2000</button>
+                    </div>
+                    <div class="custom-amount">
+                        <label for="custom-deposit">Other Amount:</label>
+                        <input type="number" id="custom-deposit" placeholder="Enter amount" min="1" step="0.01">
+                        <button id="deposit-custom-btn" class="btn btn-primary">DEPOSIT</button>
+                    </div>
+                    <button class="btn btn-secondary back-btn" data-screen="main-menu">
+                        <i class="fas fa-arrow-left"></i> BACK TO MENU
+                    </button>
+                </div>
+
+                <!-- Transaction History Screen -->
+                <div id="history-screen" class="screen">
+                    <div class="screen-header">
+                        <h2><i class="fas fa-history"></i> Transaction History</h2>
+                        <p>Last 10 transactions</p>
+                    </div>
+                    <div class="transaction-list" id="transaction-list">
+                        <!-- Transactions will be loaded here -->
+                    </div>
+                    <button class="btn btn-secondary back-btn" data-screen="main-menu">
+                        <i class="fas fa-arrow-left"></i> BACK TO MENU
+                    </button>
+                </div>
+
+                <!-- Loading Screen -->
+                <div id="loading-screen" class="screen">
+                    <div class="loading-content">
+                        <div class="spinner"></div>
+                        <p>Processing your request...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="atm-keypad">
+                <div class="keypad-row">
+                    <button class="key-btn number" data-number="1">1</button>
+                    <button class="key-btn number" data-number="2">2</button>
+                    <button class="key-btn number" data-number="3">3</button>
+                </div>
+                <div class="keypad-row">
+                    <button class="key-btn number" data-number="4">4</button>
+                    <button class="key-btn number" data-number="5">5</button>
+                    <button class="key-btn number" data-number="6">6</button>
+                </div>
+                <div class="keypad-row">
+                    <button class="key-btn number" data-number="7">7</button>
+                    <button class="key-btn number" data-number="8">8</button>
+                    <button class="key-btn number" data-number="9">9</button>
+                </div>
+                <div class="keypad-row">
+                    <button class="key-btn action" id="clear-btn">CLEAR</button>
+                    <button class="key-btn number" data-number="0">0</button>
+                    <button class="key-btn action" id="enter-btn">ENTER</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert Modal -->
+        <div id="alert-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-icon"></span>
+                    <h3 id="modal-title">Alert</h3>
+                </div>
+                <div class="modal-body">
+                    <p id="modal-message">Message</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="modal-ok" class="btn btn-primary">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
