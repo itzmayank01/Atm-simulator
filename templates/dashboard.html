@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard | ATM Simulator{% endblock %}
+{% block content %}
+<h2 class="mb-4">Welcome, Account #{{ user.id }}</h2>
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card text-center shadow-sm">
+            <div class="card-header bg-success text-white">Current Balance</div>
+            <div class="card-body">
+                <h3>$ {{ '%.2f'|format(user.balance) }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-dark">Withdraw Cash</div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('withdraw') }}">
+                    <div class="mb-3">
+                        <input type="number" step="0.01" min="0" name="amount" class="form-control" placeholder="Amount" required>
+                    </div>
+                    <button class="btn btn-warning w-100" type="submit">Withdraw</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">Deposit Cash</div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('deposit') }}">
+                    <div class="mb-3">
+                        <input type="number" step="0.01" min="0" name="amount" class="form-control" placeholder="Amount" required>
+                    </div>
+                    <button class="btn btn-info w-100" type="submit">Deposit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr class="my-4">
+
+<h4>Transaction History</h4>
+<table class="table table-striped" id="history-table">
+    <thead>
+        <tr>
+            <th>Date &amp; Time</th>
+            <th>Type</th>
+            <th class="text-end">Amount ($)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- History rows will be inserted via JS -->
+    </tbody>
+</table>
+{% endblock %}

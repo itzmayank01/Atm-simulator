@@ -1,0 +1,11 @@
+body {
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.card-header {
+    font-weight: 600;
+}
+
+#history-table tbody tr td:last-child {
+    text-align: right;
+}
