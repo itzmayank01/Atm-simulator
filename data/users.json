@@ -1,0 +1,11 @@
+{
+    "users": [
+        {
+            "id": 1001,
+            "name": "Test User",
+            "pin_hash": "pbkdf2:sha256:600000$vxmPKzW0fvHtstkr$d8cafd995702d002b4b5d4798365a793bcee66475d27be27fa9982f9b2585fa7",
+            "balance": 1500.00,
+            "transactions": []
+        }
+    ]
+}
