@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM Login</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="atm-container">
+        <h2>ATM Login</h2>
+        <form method="POST" action="/login">
+            <input type="text" name="account" placeholder="Account Number" required>
+            <input type="password" name="pin" placeholder="PIN" required maxlength="6">
+            {% if error %}<div class="error">{{ error }}</div>{% endif %}
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>
